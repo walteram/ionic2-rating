@@ -26,7 +26,9 @@ export const RATING_CONTROL_VALUE_ACCESSOR: any = {
   template: `
     <ul class="rating" (keydown)="onKeyDown($event)">
       <li *ngFor="let starIndex of starIndexes" tappable (click)="rate(starIndex + 1)">
-        <ion-icon [name]="getStarIconName(starIndex)">
+        <ion-icon [name]="getStarIconName(starIndex)" *ngIf="!useSrc">
+        </ion-icon>
+        <ion-icon [src]="getStarIconName(starIndex)" *ngIf="useSrc">
         </ion-icon>
       </li>
     </ul>`,
@@ -40,6 +42,7 @@ export class Ionic2Rating implements ControlValueAccessor {
   _halfStarIconName: string = 'star-half';
   _starIconName: string = 'star';
   _nullable: boolean = false;
+  _useSrc: boolean = false;
 
   @Input()
   get max() {
@@ -91,6 +94,14 @@ export class Ionic2Rating implements ControlValueAccessor {
   }
   set nullable(val: any) {
     this._nullable = this.isTrueProperty(val);
+  }
+  
+  @Input()
+  get useSrc() {
+    return this._useSrc;
+  }
+  set useSrc(val: any) {
+    this._useSrc = this.isTrueProperty(val);
   }
 
   innerValue: any;
